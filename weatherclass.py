@@ -5,12 +5,50 @@ class WeatherDataclass:
         self.Current_temp = Current_Temp
         self.Current_weather = Current_weather
         self.convert_to_binary()
+        self.current_temp_color
+
         self.LED_color_data()
+        binaryLine = self.binary_current_temp + self.binary_low_temp + self.binary_high_temp
+        print(binaryLine)
+        self.pixels = []
+        x = 0
+        for bit in binaryLine:
+            if(bit == 0):
+                on = False;
+            else:
+                on = True;
+
+            if(0 <= x >= 7 ):
+                self.pixels.append(Pixel(self.binary_current_temp, on))
+            elif(8 <= x >= 15):
+                self.pixels.append(Pixel(self.binary_low_temp, on))
+            elif (16 <= x >= 23):
+                self.pixels.append(Pixel(self.binary_high_temp, on))
+            x = x + 1
+
+
+
+
+
+
 
     def convert_to_binary(self):
+
         self.binary_low_temp = "{0:b}".format(self.Low_temp)
+        #Pad with zeros
+        while(len(self.binary_low_temp) < 8):
+            self.binary_low_temp = "0" + self.binary_low_temp
+
         self.binary_high_temp = "{0:b}".format(self.High_temp)
+        # Pad with zeros
+        while (len(self.binary_high_temp) < 8):
+            self.binary_high_temp = "0" + self.binary_high_temp
+
+
         self.binary_current_temp = "{0:b}".format(self.Current_temp)
+        # Pad with zeros
+        while (len(self.binary_current_temp) < 8):
+            self.binary_current_temp = "0" + self.binary_current_temp
 
     def LED_color_data(self):
         self.high_temp_color = self.definecolor(self.High_temp)
@@ -47,5 +85,11 @@ class WeatherDataclass:
 class Color_data:
     def __init__(self, red, green, blue):
         self.red   = red
-        self.greem = green
+        self.green = green
         self.blue  = blue
+
+
+class Pixel:
+    def __init__(self, inColorData, lightOn):
+        self.color =  inColorData
+        self.on = lightOn

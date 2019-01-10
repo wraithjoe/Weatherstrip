@@ -1,6 +1,17 @@
 from weather import Weather, Unit
 from weatherclass import WeatherDataclass
 import  time
+from neopixel import *
+
+# LED strip configuration:
+LED_COUNT      = 144      # Number of LED pixels.
+LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
+#LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
+LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
+LED_DMA        = 10      # DMA channel to use for generating signal (try 10)
+LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
+LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
+LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 
 weather = Weather(unit=Unit.FAHRENHEIT)
 
@@ -14,7 +25,7 @@ condition = lookup.condition
     #print(forecast.high)
     #print(forecast.low)
 
-
+strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
 #print(condition.temp)
 weather = Weather(unit=Unit.FAHRENHEIT)
 count = 0
@@ -29,17 +40,12 @@ while (0 < 1):
         print("Low Temp Dec:{}, Low Temp in Bin:{}".format(currentWeather.Low_temp, currentWeather.binary_low_temp))
         print("Current Temp Dec:{}, Current Temp in Bin:{}".format(currentWeather.Current_temp, currentWeather.binary_current_temp))
         print("Current Conditions:{}".format(currentWeather.Current_weather))
-        print(currentWeather.binary_high_temp[0])
-        print(currentWeather.binary_high_temp[1])
-        print(currentWeather.binary_high_temp[2])
-        print(currentWeather.binary_high_temp[3])
-        print(currentWeather.binary_high_temp[4])
-        print(len(currentWeather.binary_current_temp))
-        print(type(currentWeather.binary_current_temp[1]))
+        pixelNo = 0
+        while(pixelNo < LED_COUNT):
 
-
-        #currentWeather.binary_current_temp = "000"+ currentWeather.binary_current_temp
-        print(currentWeather.binary_current_temp)
+            if(currentWeather.pixels[pixelNo].on):
+                strip.setPixelColor(pixelNo,Color(currentWeather.pixels[pixelNo].color.red,currentWeather.pixels[pixelNo].color.green, currentWeather.pixels[pixelNo].color.blue))
+            pixelNo = pixelNo + 1
 
 
 
@@ -52,7 +58,11 @@ while (0 < 1):
 
 
 
-#TODO: Create function to update LED Strip with WeatherDataClass as input
 
+
+
+
+
+#TODO: Create function to update LED Strip with WeatherDataClass as input
 
 
