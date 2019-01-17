@@ -5,8 +5,6 @@ class WeatherDataclass:
         self.Current_temp = Current_Temp
         self.Current_weather = Current_weather
         self.convert_to_binary()
-        self.current_temp_color
-
         self.LED_color_data()
         binaryLine = self.binary_current_temp + self.binary_low_temp + self.binary_high_temp
         print(binaryLine)
